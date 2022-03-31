@@ -1,14 +1,12 @@
 ﻿using Application.CreateStudent;
-using Application.CreateTeacher;
 using Application.GetStudents;
 using Domain;
 using Domain.Aggregates.StudentAggregate;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace SchoolManagement.Controllers
+namespace WebService.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -26,7 +24,7 @@ namespace SchoolManagement.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetAllStudents([FromQuery]GetStudentsQuery query)
+        public async Task<ActionResult> GetAllStudents([FromQuery] GetStudentsQuery query)
         {
             var result = await _queryDispatcher
                 .DispatchAsync<GetStudentsQuery, IReadOnlyList<Student>>(query);
