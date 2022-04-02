@@ -35,10 +35,14 @@ namespace WebService.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateStudent([FromBody] CreateStudentCommand command)
         {
-            var response = await _commandDispatcher
-                .DispatchAsync<CreateStudentCommand, bool>(command);
+            //var response = await _commandDispatcher
+            //    .DispatchAsync<CreateStudentCommand, bool>(command);
 
-            return Ok(response);
+            //return Ok(response);
+
+            await _commandDispatcher.DispatchToQueueAsync(command);
+
+            return Accepted();
         }
     }
 }

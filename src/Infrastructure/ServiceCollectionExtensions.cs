@@ -14,7 +14,7 @@ namespace Infrastructure
         public static void AddServices(this IServiceCollection services)
         {
             services.AddDbContext<AppDbContext>(
-                options => options.UseSqlServer(@"Server=DESKTOP-T0I3DDN;Database=SchoolDB;Trusted_Connection=True;"));
+                options => options.UseSqlServer(@"Server=THISISRASEL;Database=SchoolDB;Trusted_Connection=True;"));
 
             services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
 

@@ -1,0 +1,39 @@
+﻿using Domain;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+
+namespace HostService
+{
+    public class HandlerResolverService : IHandlerResolverService
+    {
+        private readonly IEnumerable<IHandler> _handlers;
+
+        public HandlerResolverService(IEnumerable<IHandler> handlers)
+        {
+            _handlers = handlers;
+        }
+
+        public (object handler, MethodInfo method, Type parameter) GetHandler(string commandType)
+        {
+            foreach (var handler in _handlers)
+            {
+                var method = handler.GetType().GetMethod("HandleAsync");
+                var parameter = method.GetParameters().FirstOrDefault();
+                if (parameter is null)
+                {
+                    continue;
+                }
+
+                var parameterType = parameter.ParameterType.ToString();
+                if (parameterType == commandType)
+                {
+                    return (handler, method, parameter.ParameterType);
+                }
+            }
+
+            throw new InvalidOperationException($"No handler found for the command: {commandType}");
+        }
+    }
+}

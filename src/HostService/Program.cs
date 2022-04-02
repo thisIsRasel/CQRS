@@ -1,0 +1,69 @@
+﻿using Infrastructure;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json;
+using RabbitMQ.Client;
+using RabbitMQ.Client.Events;
+using System;
+using System.Reflection;
+using System.Text;
+
+namespace HostService
+{
+    public class Program
+    {
+        static void Main(string[] args)
+        {
+            var host = CreateHostBuilder(args).Build();
+
+            var factory = new ConnectionFactory() { HostName = "localhost" };
+            using var connection = factory.CreateConnection();
+            using var channel = connection.CreateModel();
+
+            var configuration = host.Services.GetService<IConfiguration>();
+            var exchangeName = configuration.GetValue<string>("ExchangeName");
+                
+            var handlerFinderService = host.Services
+                .GetService<IHandlerResolverService>();
+
+            channel.ExchangeDeclare(
+                exchange: exchangeName,
+                type: ExchangeType.Fanout);
+
+            var queueName = channel.QueueDeclare().QueueName;
+            channel.QueueBind(
+                queue: queueName,
+                exchange: exchangeName,
+                routingKey: string.Empty);
+
+            var consumer = new EventingBasicConsumer(channel);
+            consumer.Received += (model, ea) =>
+            {
+                var body = ea.Body.ToArray();
+                var message = Encoding.UTF8.GetString(body);
+                var data = JsonConvert.DeserializeObject<RabbitMQMessage>(message);
+
+                (object handler, MethodInfo method, Type parameter)
+                    = handlerFinderService.GetHandler(data.MessageType);
+
+                method.Invoke(handler, new[] { JsonConvert.DeserializeObject(data.Message, parameter) });
+            };
+
+            channel.BasicConsume(
+                queue: queueName,
+                autoAck: true,
+                consumer: consumer);
+
+            host.Run();
+        }
+
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)
+                .ConfigureServices((context, services) =>
+                {
+                    services.AddServices();
+                    services.AddTransient<IHandlerResolverService, HandlerResolverService>();
+                });
+    }
+}

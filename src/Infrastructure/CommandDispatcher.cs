@@ -1,15 +1,23 @@
 ﻿using Domain;
+using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
+using RabbitMQ.Client;
 using System;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Infrastructure
 {
     public class CommandDispatcher : ICommandDispatcher
     {
+        private readonly IConfiguration _configuration;
         private readonly IServiceProvider _serviceProvider;
 
-        public CommandDispatcher(IServiceProvider serviceProvider)
+        public CommandDispatcher(
+            IConfiguration configuration,
+            IServiceProvider serviceProvider)
         {
+            _configuration = configuration;
             _serviceProvider = serviceProvider;
         }
 
@@ -26,5 +34,50 @@ namespace Infrastructure
 
             return service.HandleAsync(command);
         }
+
+        public Task DispatchToQueueAsync<TCommand>(TCommand command)
+        {
+            var exchangeName = _configuration["ExchangeName"];
+            var factory = new ConnectionFactory() { HostName = "localhost" };
+            using var connection = factory.CreateConnection();
+            using var channel = connection.CreateModel();
+
+            channel.ExchangeDeclare(
+                exchange: exchangeName, 
+                type: ExchangeType.Fanout);
+
+            var message = GetMessage(command);
+            var body = Encoding.UTF8.GetBytes(
+                JsonConvert.SerializeObject(message));
+
+            channel.BasicPublish(
+                exchange: exchangeName,
+                routingKey: string.Empty,
+                basicProperties: null,
+                body: body);
+
+            return Task.CompletedTask;
+        }
+
+        private RabbitMQMessage GetMessage<TCommand>(TCommand command)
+        {
+            var message = new RabbitMQMessage
+            {
+                MessageId = Guid.NewGuid().ToString(),
+                MessageType = command.GetType().ToString(),
+                Message = JsonConvert.SerializeObject(command),
+            };
+
+            return message;
+        }
+    }
+
+    public class RabbitMQMessage
+    {
+        public string MessageId { get; set; }
+
+        public string MessageType { get; set; }
+
+        public string Message { get; set; }
     }
 }
