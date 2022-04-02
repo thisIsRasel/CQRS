@@ -22,20 +22,23 @@ namespace Infrastructure
         }
 
         public Task<TResponse> DispatchAsync<TCommand, TResponse>(TCommand command)
+            where TCommand : notnull
         {
             var type = typeof(ICommandHandler<TCommand, TResponse>);
-            var service = (ICommandHandler<TCommand, TResponse>) _serviceProvider.GetService(type);
 
+            var service = _serviceProvider.GetService(type);
             if (service is null)
             {
                 throw new InvalidOperationException(
                     $"No command handler found for command: {typeof(TCommand).Name}");
             }
 
-            return service.HandleAsync(command);
+            var handler = (ICommandHandler<TCommand, TResponse>) service;
+            return handler.HandleAsync(command);
         }
 
         public Task DispatchToQueueAsync<TCommand>(TCommand command)
+            where TCommand : notnull
         {
             var exchangeName = _configuration["ExchangeName"];
             var factory = new ConnectionFactory() { HostName = "localhost" };
@@ -59,7 +62,8 @@ namespace Infrastructure
             return Task.CompletedTask;
         }
 
-        private RabbitMQMessage GetMessage<TCommand>(TCommand command)
+        private static RabbitMQMessage GetMessage<TCommand>(TCommand command)
+            where TCommand : notnull
         {
             var message = new RabbitMQMessage
             {
@@ -70,14 +74,5 @@ namespace Infrastructure
 
             return message;
         }
-    }
-
-    public class RabbitMQMessage
-    {
-        public string MessageId { get; set; }
-
-        public string MessageType { get; set; }
-
-        public string Message { get; set; }
     }
 }

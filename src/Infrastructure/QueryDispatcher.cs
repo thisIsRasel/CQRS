@@ -16,15 +16,16 @@ namespace Infrastructure
         public Task<TResponse> DispatchAsync<TQuery, TResponse>(TQuery query)
         {
             var type = typeof(IQueryHandler<TQuery, TResponse>);
-            var service = (IQueryHandler<TQuery, TResponse>)_serviceProvider.GetService(type);
 
+            var service = _serviceProvider.GetService(type);
             if (service is null)
             {
                 throw new InvalidOperationException(
                     $"No query handler found for query: {typeof(TQuery).Name}");
             }
 
-            return service.HandleAsync(query);
+            var handler = (IQueryHandler<TQuery, TResponse>) service;
+            return handler.HandleAsync(query);
         }
     }
 }

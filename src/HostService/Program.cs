@@ -24,8 +24,13 @@ namespace HostService
             var configuration = host.Services.GetService<IConfiguration>();
             var exchangeName = configuration.GetValue<string>("ExchangeName");
                 
-            var handlerFinderService = host.Services
+            var handlerResolverService = host.Services
                 .GetService<IHandlerResolverService>();
+            if (handlerResolverService is null)
+            {
+                throw new InvalidOperationException(
+                    $"Handler resolver service not found!");
+            }
 
             channel.ExchangeDeclare(
                 exchange: exchangeName,
@@ -44,10 +49,10 @@ namespace HostService
                 var message = Encoding.UTF8.GetString(body);
                 var data = JsonConvert.DeserializeObject<RabbitMQMessage>(message);
 
-                (object handler, MethodInfo method, Type parameter)
-                    = handlerFinderService.GetHandler(data.MessageType);
+                (object handler, MethodInfo method, Type parameterType)
+                    = handlerResolverService.GetHandler(data.MessageType);
 
-                method.Invoke(handler, new[] { JsonConvert.DeserializeObject(data.Message, parameter) });
+                method.Invoke(handler, new[] { JsonConvert.DeserializeObject(data.Message, parameterType) });
             };
 
             channel.BasicConsume(

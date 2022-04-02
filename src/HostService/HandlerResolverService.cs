@@ -15,11 +15,16 @@ namespace HostService
             _handlers = handlers;
         }
 
-        public (object handler, MethodInfo method, Type parameter) GetHandler(string commandType)
+        public (object handler, MethodInfo method, Type parameterType) GetHandler(string commandType)
         {
             foreach (var handler in _handlers)
             {
                 var method = handler.GetType().GetMethod("HandleAsync");
+                if (method is null)
+                {
+                    continue;
+                }
+
                 var parameter = method.GetParameters().FirstOrDefault();
                 if (parameter is null)
                 {
