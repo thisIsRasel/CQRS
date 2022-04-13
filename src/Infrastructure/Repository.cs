@@ -1,8 +1,7 @@
-﻿using Domain;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Domain;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure
 {
@@ -10,7 +9,7 @@ namespace Infrastructure
         where TEntity : class
     {
         private readonly AppDbContext _appDbContext;
-        private DbSet<TEntity> _entities;
+        private readonly DbSet<TEntity> _entities;
 
         public Repository(AppDbContext appDbContext)
         {

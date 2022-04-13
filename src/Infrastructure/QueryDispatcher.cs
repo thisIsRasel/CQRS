@@ -24,7 +24,7 @@ namespace Infrastructure
                     $"No query handler found for query: {typeof(TQuery).Name}");
             }
 
-            var handler = (IQueryHandler<TQuery, TResponse>) service;
+            var handler = (IQueryHandler<TQuery, TResponse>)service;
             return handler.HandleAsync(query);
         }
     }

@@ -33,7 +33,7 @@ namespace Infrastructure
                     $"No command handler found for command: {typeof(TCommand).Name}");
             }
 
-            var handler = (ICommandHandler<TCommand, TResponse>) service;
+            var handler = (ICommandHandler<TCommand, TResponse>)service;
             return handler.HandleAsync(command);
         }
 
@@ -46,7 +46,7 @@ namespace Infrastructure
             using var channel = connection.CreateModel();
 
             channel.ExchangeDeclare(
-                exchange: exchangeName, 
+                exchange: exchangeName,
                 type: ExchangeType.Fanout);
 
             var message = GetMessage(command);

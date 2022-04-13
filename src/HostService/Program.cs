@@ -23,7 +23,7 @@ namespace HostService
 
             var configuration = host.Services.GetService<IConfiguration>();
             var exchangeName = configuration.GetValue<string>("ExchangeName");
-                
+
             var handlerResolverService = host.Services
                 .GetService<IHandlerResolverService>();
             if (handlerResolverService is null)
