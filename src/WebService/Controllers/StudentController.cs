@@ -1,10 +1,13 @@
-﻿using Application.CreateStudent;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
+using System.Threading.Tasks;
+using Application.CreateStudent;
 using Application.GetStudents;
 using Domain;
 using Domain.Aggregates.StudentAggregate;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using Serilog;
 
 namespace WebService.Controllers
 {
@@ -14,13 +17,16 @@ namespace WebService.Controllers
     {
         private readonly ICommandDispatcher _commandDispatcher;
         private readonly IQueryDispatcher _queryDispatcher;
+        private readonly ILogger<StudentController> _logger;
 
         public StudentController(
             ICommandDispatcher commandDispatcher,
-            IQueryDispatcher queryDispatcher)
+            IQueryDispatcher queryDispatcher,
+            ILogger<StudentController> logger)
         {
             _commandDispatcher = commandDispatcher;
             _queryDispatcher = queryDispatcher;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -28,6 +34,8 @@ namespace WebService.Controllers
         {
             var result = await _queryDispatcher
                 .DispatchAsync<GetStudentsQuery, IReadOnlyList<Student>>(query);
+
+            _logger.LogInformation("List of {Count} students found", result.Count);
 
             return Ok(result);
         }
