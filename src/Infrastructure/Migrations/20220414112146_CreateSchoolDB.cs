@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Domain.Migrations
+namespace Infrastructure.Migrations
 {
     public partial class CreateSchoolDB : Migration
     {

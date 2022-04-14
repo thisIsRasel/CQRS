@@ -1,5 +1,5 @@
-﻿using Application.CreateStudent;
-using Application.CreateTeacher;
+﻿using System.Reflection;
+using Application.CreateStudent;
 using Application.GetStudents;
 using Domain;
 using Domain.Aggregates.StudentAggregate;
@@ -13,8 +13,12 @@ namespace Infrastructure
     {
         public static void AddServices(this IServiceCollection services)
         {
-            services.AddDbContext<AppDbContext>(
-                options => options.UseSqlServer(@"Server=THISISRASEL;Database=SchoolDB;Trusted_Connection=True;"));
+            services.AddDbContext<AppDbContext>(optionBuilder =>
+            {
+                optionBuilder.UseSqlServer(
+                    "Server=THISISRASEL;Database=SchoolDB;Trusted_Connection=True;",
+                    options => options.MigrationsAssembly(Assembly.GetExecutingAssembly().GetName().Name));
+            });
 
             services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
 
@@ -27,7 +31,7 @@ namespace Infrastructure
             //services.AddTransient<ICommandHandler<CreateStudentCommand, bool>, CreateStudentCommandHandler>();
             //services.AddTransient<ICommandHandler<CreateTeacherCommand, string>, CreateTeacherCommandHandler>();
 
-            services.Scan(scan => 
+            services.Scan(scan =>
             {
                 scan
                  .FromAssemblyOf<CreateStudentCommandHandler>()

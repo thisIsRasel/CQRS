@@ -1,19 +1,18 @@
-﻿using Infrastructure;
+﻿using System;
+using System.Text;
+using Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
-using System;
-using System.Reflection;
-using System.Text;
 
 namespace HostService
 {
     public class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             var host = CreateHostBuilder(args).Build();
 
@@ -49,7 +48,7 @@ namespace HostService
                 var message = Encoding.UTF8.GetString(body);
                 var data = JsonConvert.DeserializeObject<RabbitMQMessage>(message);
 
-                (object handler, MethodInfo method, Type parameterType)
+                var (handler, method, parameterType)
                     = handlerResolverService.GetHandler(data.MessageType);
 
                 method.Invoke(handler, new[] { JsonConvert.DeserializeObject(data.Message, parameterType) });
