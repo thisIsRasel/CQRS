@@ -46,7 +46,7 @@ namespace UnitTests.Infrastructure
 
         public class TestCommand
         {
-
+            public string Name { get; set; }
         }
 
         public class TestCommandHandler : ICommandHandler<TestCommand, bool>
