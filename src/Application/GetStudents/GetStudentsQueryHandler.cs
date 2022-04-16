@@ -1,11 +1,12 @@
 ﻿using Domain;
 using Domain.Aggregates.StudentAggregate;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Application.GetStudents
 {
-    public class GetStudentsQueryHandler
+    public sealed class GetStudentsQueryHandler
         : IQueryHandler<GetStudentsQuery, IReadOnlyList<Student>>
     {
         private readonly IStudentReadRepository _studentReadRepository;
@@ -16,12 +17,13 @@ namespace Application.GetStudents
             _studentReadRepository = studentReadRepository;
         }
 
-        public async Task<IReadOnlyList<Student>> HandleAsync(GetStudentsQuery query)
+        public async Task<IReadOnlyList<Student>> HandleAsync(
+            GetStudentsQuery query)
         {
             var result = await _studentReadRepository
-                .GetAllStudentsAsync();
+                .GetStudentsByAgeAsync(query.Age);
 
-            return result;
+            return result.ToList();
         }
     }
 }

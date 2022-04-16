@@ -1,10 +1,10 @@
-﻿using Domain;
+﻿using System;
+using System.Text;
+using System.Threading.Tasks;
+using Domain;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
-using System;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure
 {

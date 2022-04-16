@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Domain;
 using Microsoft.EntityFrameworkCore;
@@ -17,15 +18,36 @@ namespace Infrastructure
             _entities = _appDbContext.Set<TEntity>();
         }
 
-        public Task<List<TEntity>> GetAllAsync()
+        public async Task<TEntity> GetItemAsync(string itemId)
         {
-            return _entities.ToListAsync();
+            return await _entities.FindAsync(itemId);
+        }
+
+        public async Task<IEnumerable<TEntity>> GetItemsAsync()
+        {
+            return await _entities.ToListAsync();
+        }
+
+        public Task<IEnumerable<TEntity>> GetItemsAsync(
+            ISpecification<TEntity> specification)
+        {
+            var result = (IEnumerable<TEntity>) ApplySpecification(specification);
+            return Task.FromResult(result);
         }
 
         public async Task InsertAsync(TEntity entity)
         {
             _entities.Add(entity);
             await _appDbContext.SaveChangesAsync();
+        }
+
+        private IQueryable<TEntity> ApplySpecification(
+            ISpecification<TEntity> specification)
+        {
+            var query = SpecificationEvaluator<TEntity>
+                .GetQuery(_entities.AsQueryable(), specification);
+
+            return query;
         }
     }
 }

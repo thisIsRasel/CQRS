@@ -20,7 +20,7 @@ namespace Infrastructure
                     options => options.MigrationsAssembly(Assembly.GetExecutingAssembly().GetName().Name));
             });
 
-            services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
+            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
             services.AddTransient<IStudentReadRepository, StudentRepository>();
             services.AddTransient<IStudentWriteRepository, StudentRepository>();

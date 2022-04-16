@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Application.CreateStudent;
+using Application.GetStudentDetail;
 using Application.GetStudents;
 using Domain;
 using Domain.Aggregates.StudentAggregate;
@@ -36,6 +37,15 @@ namespace WebService.Controllers
                 .DispatchAsync<GetStudentsQuery, IReadOnlyList<Student>>(query);
 
             _logger.LogInformation("List of {Count} students found", result.Count);
+
+            return Ok(result);
+        }
+
+        [HttpGet("{ItemId}")]
+        public async Task<ActionResult> GetStudentDetail([FromRoute] GetStudentDetailQuery query)
+        {
+            var result = await _queryDispatcher
+                .DispatchAsync<GetStudentDetailQuery, Student>(query);
 
             return Ok(result);
         }

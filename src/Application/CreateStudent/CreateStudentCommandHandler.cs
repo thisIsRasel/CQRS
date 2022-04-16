@@ -23,6 +23,7 @@ namespace Application.CreateStudent
                 ItemId = Guid.NewGuid().ToString(),
                 FirstName = command.FirstName,
                 LastName = command.LastName,
+                Age = command.Age,
             });
 
             return true;

@@ -3,7 +3,7 @@
 namespace Domain
 {
     public interface ICommandHandler<TCommand, TResponse>
-        : IHandler
+        : IHandler where TCommand : notnull
     {
         Task<TResponse> HandleAsync(TCommand command);
     }
