@@ -5,12 +5,11 @@ namespace Domain.Aggregates.StudentAggregate
 {
     public interface IStudentReadRepository
     {
-        Task<IReadOnlyList<Student>> GetStudentsAsync();
+        Task<Student> GetAsync(string itemId);
 
-        Task<int> GetStudentsCountAsync(int age);
+        Task<IEnumerable<Student>> GetByAgeAsync(
+            int age, int pageNumber);
 
-        Task<IEnumerable<Student>> GetStudentsByAgeAsync(int age, int pageNumber);
-
-        Task<Student> GetStudentByIdAsync(string itemId);
+        Task<int> GetTotalCountByAgeAsync(int age);
     }
 }

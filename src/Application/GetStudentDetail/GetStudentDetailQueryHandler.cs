@@ -17,7 +17,7 @@ namespace Application.GetStudentDetail
         public async Task<Student> HandleAsync(GetStudentDetailQuery query)
         {
             var student = await _studentReadRepository
-                .GetStudentByIdAsync(query.ItemId);
+                .GetAsync(query.ItemId);
 
             return student;
         }

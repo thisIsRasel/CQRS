@@ -22,7 +22,7 @@ namespace Application.CreateStudent
         public async Task<bool> HandleAsync(CreateStudentCommand command)
         {
             var student = await _studentReadRepository
-                .GetStudentByIdAsync(command.ItemId);
+                .GetAsync(command.ItemId);
 
             if (student is null)
             {

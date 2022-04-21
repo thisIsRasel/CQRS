@@ -1,13 +1,12 @@
-﻿using Domain;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using Domain;
 using Domain.Aggregates.StudentAggregate;
 using Domain.Aggregates.StudentAggregate.Specifications;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Infrastructure.Repositories
 {
-    public class StudentRepository 
+    public class StudentRepository
         : IStudentReadRepository, IStudentWriteRepository
     {
         private readonly IRepository<Student> _repository;
@@ -17,25 +16,12 @@ namespace Infrastructure.Repositories
             _repository = repository;
         }
 
-        public async Task<IReadOnlyList<Student>> GetStudentsAsync()
-        {
-            var result = await _repository.GetItemsAsync();
-            return result.ToList();
-        }
-
-        public async Task<Student> GetStudentByIdAsync(string itemId)
+        public async Task<Student> GetAsync(string itemId)
         {
             return await _repository.GetItemAsync(itemId);
         }
 
-        public async Task<int> GetStudentsCountAsync(int age)
-        {
-            var specification = new StudentAgeSpecification(age);
-
-            return await _repository.CountAsync(specification);
-        }
-
-        public async Task<IEnumerable<Student>> GetStudentsByAgeAsync(
+        public async Task<IEnumerable<Student>> GetByAgeAsync(
             int age, int pageNumber)
         {
             var specification = new StudentAgeSpecification(age);
@@ -43,6 +29,13 @@ namespace Infrastructure.Repositories
             specification.ApplyPaging(pageNumber: pageNumber, pageSize: 2);
 
             return await _repository.GetItemsAsync(specification);
+        }
+
+        public async Task<int> GetTotalCountByAgeAsync(int age)
+        {
+            var specification = new StudentAgeSpecification(age);
+
+            return await _repository.CountAsync(specification);
         }
 
         public async Task CreateStudentAsync(Student student)
