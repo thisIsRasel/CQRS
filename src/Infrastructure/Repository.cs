@@ -31,13 +31,25 @@ namespace Infrastructure
         public Task<IEnumerable<TEntity>> GetItemsAsync(
             ISpecification<TEntity> specification)
         {
-            var result = (IEnumerable<TEntity>) ApplySpecification(specification);
+            var result = (IEnumerable<TEntity>)ApplySpecification(specification);
             return Task.FromResult(result);
         }
 
         public async Task InsertAsync(TEntity entity)
         {
             _entities.Add(entity);
+            await _appDbContext.SaveChangesAsync();
+        }
+
+        public async Task UpdateAsync(TEntity entity)
+        {
+            _entities.Update(entity);
+            await _appDbContext.SaveChangesAsync();
+        }
+
+        public async Task DeleteAsync(TEntity entity)
+        {
+            _entities.Remove(entity);
             await _appDbContext.SaveChangesAsync();
         }
 

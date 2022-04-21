@@ -14,6 +14,13 @@ namespace Infrastructure
                 query = query.Where(specification.Criteria);
             }
 
+            if (specification.IsPagingEnabled)
+            {
+                query = query
+                    .Skip(specification.Skip)
+                    .Take(specification.Take);
+            }
+
             return query;
         }
     }

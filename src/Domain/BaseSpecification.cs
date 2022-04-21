@@ -11,6 +11,19 @@ namespace Domain
             Criteria = criteria;
         }
 
+        public void ApplyPaging(int skip, int take)
+        {
+            Skip = skip;
+            Take = take;
+            IsPagingEnabled = true;
+        }
+
         public Expression<Func<TEntity, bool>> Criteria { get; }
+
+        public int Skip { get; private set; }
+
+        public int Take { get; private set; }
+
+        public bool IsPagingEnabled { get; private set; }
     }
 }

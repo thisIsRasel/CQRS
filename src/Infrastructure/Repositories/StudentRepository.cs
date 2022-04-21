@@ -41,5 +41,15 @@ namespace Infrastructure.Repositories
         {
             await _repository.InsertAsync(student);
         }
+
+        public async Task UpdateStudentAsync(Student student)
+        {
+            await _repository.UpdateAsync(student);
+        }
+
+        public async Task RemoveStudentAsync(Student student)
+        {
+            await _repository.DeleteAsync(student);
+        }
     }
 }

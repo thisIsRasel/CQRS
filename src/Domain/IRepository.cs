@@ -14,5 +14,9 @@ namespace Domain
             ISpecification<TEntity> specification);
 
         Task InsertAsync(TEntity entity);
+
+        Task UpdateAsync(TEntity entity);
+
+        Task DeleteAsync(TEntity entity);
     }
 }
