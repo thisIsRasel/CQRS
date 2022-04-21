@@ -8,9 +8,9 @@ namespace Domain
     {
         Expression<Func<TEntity, bool>> Criteria { get; }
 
-        int Take { get; }
+        int PageSize { get; }
 
-        int Skip { get; }
+        int PageNumber { get; }
 
         bool IsPagingEnabled { get; }
     }

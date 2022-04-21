@@ -9,7 +9,7 @@ namespace Domain.Aggregates.StudentAggregate
 
         Task<int> GetStudentsCountAsync(int age);
 
-        Task<IEnumerable<Student>> GetStudentsByAgeAsync(int age);
+        Task<IEnumerable<Student>> GetStudentsByAgeAsync(int age, int pageNumber);
 
         Task<Student> GetStudentByIdAsync(string itemId);
     }

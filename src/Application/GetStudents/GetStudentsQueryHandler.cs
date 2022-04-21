@@ -20,7 +20,7 @@ namespace Application.GetStudents
             GetStudentsQuery query)
         {
             var result = await _studentReadRepository
-                .GetStudentsByAgeAsync(query.Age);
+                .GetStudentsByAgeAsync(age: query.Age, pageNumber: query.Page);
 
             var totalCount = await _studentReadRepository
                 .GetStudentsCountAsync(query.Age);

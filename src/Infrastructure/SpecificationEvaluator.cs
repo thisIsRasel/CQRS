@@ -16,9 +16,17 @@ namespace Infrastructure
 
             if (specification.IsPagingEnabled)
             {
+                var pageNumber = specification.PageNumber > 0
+                    ? specification.PageNumber
+                    : 1;
+
+                var pageSize = specification.PageSize > 0
+                    ? specification.PageSize
+                    : 10;
+
                 query = query
-                    .Skip(specification.Skip)
-                    .Take(specification.Take);
+                    .Skip((pageNumber - 1) * pageSize)
+                    .Take(pageSize);
             }
 
             return query;

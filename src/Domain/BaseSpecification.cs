@@ -11,18 +11,18 @@ namespace Domain
             Criteria = criteria;
         }
 
-        public void ApplyPaging(int skip, int take)
+        public void ApplyPaging(int pageNumber, int pageSize = 10)
         {
-            Skip = skip;
-            Take = take;
+            PageSize = pageSize;
+            PageNumber = pageNumber;
             IsPagingEnabled = true;
         }
 
         public Expression<Func<TEntity, bool>> Criteria { get; }
 
-        public int Skip { get; private set; }
+        public int PageSize { get; private set; }
 
-        public int Take { get; private set; }
+        public int PageNumber { get; private set; }
 
         public bool IsPagingEnabled { get; private set; }
     }

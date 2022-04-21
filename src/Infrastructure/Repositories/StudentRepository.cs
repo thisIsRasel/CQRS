@@ -35,10 +35,12 @@ namespace Infrastructure.Repositories
             return await _repository.CountAsync(specification);
         }
 
-        public async Task<IEnumerable<Student>> GetStudentsByAgeAsync(int age)
+        public async Task<IEnumerable<Student>> GetStudentsByAgeAsync(
+            int age, int pageNumber)
         {
             var specification = new StudentAgeSpecification(age);
-            specification.ApplyPaging(skip: 0, take: 2);
+
+            specification.ApplyPaging(pageNumber: pageNumber, pageSize: 2);
 
             return await _repository.GetItemsAsync(specification);
         }
