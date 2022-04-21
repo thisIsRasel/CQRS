@@ -8,10 +8,8 @@ namespace Domain
     {
         Task<TEntity> GetItemAsync(string itemId);
 
-        Task<IEnumerable<TEntity>> GetItemsAsync();
-
         Task<IEnumerable<TEntity>> GetItemsAsync(
-            ISpecification<TEntity> specification);
+            ISpecification<TEntity> specification = null);
 
         Task InsertAsync(TEntity entity);
 

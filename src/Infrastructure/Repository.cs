@@ -23,13 +23,8 @@ namespace Infrastructure
             return await _entities.FindAsync(itemId);
         }
 
-        public async Task<IEnumerable<TEntity>> GetItemsAsync()
-        {
-            return await _entities.ToListAsync();
-        }
-
         public Task<IEnumerable<TEntity>> GetItemsAsync(
-            ISpecification<TEntity> specification)
+            ISpecification<TEntity>? specification = null)
         {
             var result = (IEnumerable<TEntity>)ApplySpecification(specification);
             return Task.FromResult(result);
@@ -54,12 +49,15 @@ namespace Infrastructure
         }
 
         private IQueryable<TEntity> ApplySpecification(
-            ISpecification<TEntity> specification)
+            ISpecification<TEntity>? specification)
         {
-            var query = SpecificationEvaluator<TEntity>
-                .GetQuery(_entities.AsQueryable(), specification);
+            if (specification is null)
+            {
+                return _entities.AsQueryable();
+            }
 
-            return query;
+            return SpecificationEvaluator<TEntity>
+                .GetQuery(_entities.AsQueryable(), specification);
         }
     }
 }
