@@ -7,6 +7,8 @@ namespace Domain.Aggregates.StudentAggregate
     {
         Task<IReadOnlyList<Student>> GetStudentsAsync();
 
+        Task<int> GetStudentsCountAsync(int age);
+
         Task<IEnumerable<Student>> GetStudentsByAgeAsync(int age);
 
         Task<Student> GetStudentByIdAsync(string itemId);

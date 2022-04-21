@@ -34,9 +34,9 @@ namespace WebService.Controllers
         public async Task<ActionResult> GetAllStudents([FromQuery] GetStudentsQuery query)
         {
             var result = await _queryDispatcher
-                .DispatchAsync<GetStudentsQuery, IReadOnlyList<Student>>(query);
+                .DispatchAsync<GetStudentsQuery, GetStudentsResponse>(query);
 
-            _logger.LogInformation("List of {Count} students found", result.Count);
+            _logger.LogInformation("List of {Count} students found", result.TotalCount);
 
             return Ok(result);
         }

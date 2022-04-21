@@ -30,6 +30,13 @@ namespace Infrastructure
             return Task.FromResult(result);
         }
 
+        public Task<int> CountAsync(
+            ISpecification<TEntity>? specification = null)
+        {
+            var query = ApplySpecification(specification);
+            return Task.FromResult(query.Count());
+        }
+
         public async Task InsertAsync(TEntity entity)
         {
             _entities.Add(entity);

@@ -28,11 +28,17 @@ namespace Infrastructure.Repositories
             return await _repository.GetItemAsync(itemId);
         }
 
-        public async Task<IEnumerable<Student>> GetStudentsByAgeAsync(
-            int age)
+        public async Task<int> GetStudentsCountAsync(int age)
         {
-            var specification = new StudentAgeSpecification(
-                age: age);
+            var specification = new StudentAgeSpecification(age);
+
+            return await _repository.CountAsync(specification);
+        }
+
+        public async Task<IEnumerable<Student>> GetStudentsByAgeAsync(int age)
+        {
+            var specification = new StudentAgeSpecification(age);
+            specification.ApplyPaging(skip: 0, take: 2);
 
             return await _repository.GetItemsAsync(specification);
         }

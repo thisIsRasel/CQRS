@@ -6,7 +6,7 @@
         public StudentAgeSpecification(int age)
             : base(s => s.Age >= age)
         {
-            ApplyPaging(0, 5);
+
         }
     }
 }

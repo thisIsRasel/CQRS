@@ -2,6 +2,6 @@
 {
     public class GetStudentDetailQuery
     {
-        public string ItemId { get; set; }
+        public string ItemId { get; set; } = default!;
     }
 }

@@ -9,7 +9,9 @@ namespace Domain
         Task<TEntity> GetItemAsync(string itemId);
 
         Task<IEnumerable<TEntity>> GetItemsAsync(
-            ISpecification<TEntity> specification = null);
+            ISpecification<TEntity>? specification = null);
+
+        Task<int> CountAsync(ISpecification<TEntity>? specification = null);
 
         Task InsertAsync(TEntity entity);
 
