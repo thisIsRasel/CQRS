@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Application.CreateStudent
 {
-    public class CreateStudentCommandHandler
+    public sealed class CreateStudentCommandHandler
         : ICommandHandler<CreateStudentCommand, bool>
     {
         private readonly IStudentReadRepository _studentReadRepository;
@@ -26,8 +26,7 @@ namespace Application.CreateStudent
 
             if (student is null)
             {
-                student = new Student();
-                await CreateStudentAsync(student, command);
+                await CreateStudentAsync(command);
                 return true;
             }
 
@@ -36,14 +35,16 @@ namespace Application.CreateStudent
         }
 
         private async Task CreateStudentAsync(
-            Student student, CreateStudentCommand command)
+            CreateStudentCommand command)
         {
+            var student = new Student();
             PrepareStudent(student, command);
             await _studentWriteRepository.CreateStudentAsync(student);
         }
 
         private async Task UpdateStudentAsync(
-            Student student, CreateStudentCommand command)
+            Student student,
+            CreateStudentCommand command)
         {
             PrepareStudent(student, command);
             await _studentWriteRepository.UpdateStudentAsync(student);

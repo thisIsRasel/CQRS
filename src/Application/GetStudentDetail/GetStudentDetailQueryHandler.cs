@@ -4,7 +4,7 @@ using Domain.Aggregates.StudentAggregate;
 
 namespace Application.GetStudentDetail
 {
-    public class GetStudentDetailQueryHandler
+    public sealed class GetStudentDetailQueryHandler
         : IQueryHandler<GetStudentDetailQuery, Student>
     {
         private readonly IStudentReadRepository _studentReadRepository;

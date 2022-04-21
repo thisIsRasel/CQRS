@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace Application.CreateTeacher
 {
-    public class CreateTeacherCommandHandler
+    public sealed class CreateTeacherCommandHandler
         : ICommandHandler<CreateTeacherCommand, string>
     {
         public Task<string> HandleAsync(CreateTeacherCommand command)
