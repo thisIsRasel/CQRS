@@ -1,8 +1,9 @@
-﻿using Domain;
-using System;
+﻿using System;
 using System.Threading.Tasks;
+using Domain;
+using Domain.Dispatchers;
 
-namespace Infrastructure
+namespace Infrastructure.Dispatchers
 {
     public class QueryDispatcher : IQueryDispatcher
     {
@@ -14,6 +15,7 @@ namespace Infrastructure
         }
 
         public Task<TResponse> DispatchAsync<TQuery, TResponse>(TQuery query)
+            where TQuery : notnull
         {
             var type = typeof(IQueryHandler<TQuery, TResponse>);
 

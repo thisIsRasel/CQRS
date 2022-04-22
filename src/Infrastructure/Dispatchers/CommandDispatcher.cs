@@ -2,11 +2,12 @@
 using System.Text;
 using System.Threading.Tasks;
 using Domain;
+using Domain.Dispatchers;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 
-namespace Infrastructure
+namespace Infrastructure.Dispatchers
 {
     public class CommandDispatcher : ICommandDispatcher
     {

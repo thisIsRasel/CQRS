@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Domain;
-using Infrastructure;
+using Infrastructure.Dispatchers;
 using Moq;
 using Moq.AutoMock;
 using Xunit;
