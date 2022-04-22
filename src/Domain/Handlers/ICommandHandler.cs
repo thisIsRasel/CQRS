@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Domain
+namespace Domain.Handlers
 {
     public interface ICommandHandler<TCommand, TResponse>
         : IHandler where TCommand : notnull

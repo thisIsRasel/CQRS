@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Domain;
+using Domain.Handlers;
 using Infrastructure.Dispatchers;
 using Moq;
 using Moq.AutoMock;

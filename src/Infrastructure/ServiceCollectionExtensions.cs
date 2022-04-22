@@ -4,6 +4,7 @@ using Application.GetStudents;
 using Domain;
 using Domain.Aggregates.StudentAggregate;
 using Domain.Dispatchers;
+using Domain.Handlers;
 using Infrastructure.Dispatchers;
 using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;

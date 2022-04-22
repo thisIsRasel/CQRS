@@ -1,5 +1,5 @@
-﻿using Domain;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using Domain.Handlers;
 
 namespace Application.CreateTeacher
 {

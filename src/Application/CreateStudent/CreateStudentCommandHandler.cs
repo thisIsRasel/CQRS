@@ -1,7 +1,7 @@
-﻿using Domain;
-using Domain.Aggregates.StudentAggregate;
-using System;
+﻿using System;
 using System.Threading.Tasks;
+using Domain.Aggregates.StudentAggregate;
+using Domain.Handlers;
 
 namespace Application.CreateStudent
 {

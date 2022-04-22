@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Domain;
 using Domain.Dispatchers;
+using Domain.Handlers;
 
 namespace Infrastructure.Dispatchers
 {

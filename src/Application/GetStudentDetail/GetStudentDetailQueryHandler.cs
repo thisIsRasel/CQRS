@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
-using Domain;
 using Domain.Aggregates.StudentAggregate;
+using Domain.Handlers;
 
 namespace Application.GetStudentDetail
 {
