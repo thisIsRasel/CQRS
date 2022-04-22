@@ -66,6 +66,7 @@ namespace HostService
             Host.CreateDefaultBuilder(args)
                 .ConfigureServices((context, services) =>
                 {
+                    services.AddInfrastructureServices();
                     services.AddServices();
                     services.AddTransient<IHandlerResolverService, HandlerResolverService>();
                 });

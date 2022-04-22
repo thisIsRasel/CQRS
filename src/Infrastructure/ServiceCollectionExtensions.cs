@@ -6,12 +6,14 @@ using Domain.Aggregates.StudentAggregate;
 using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Serilog;
 
 namespace Infrastructure
 {
     public static class ServiceCollectionExtensions
     {
-        public static void AddServices(this IServiceCollection services)
+        public static IServiceCollection AddInfrastructureServices(
+            this IServiceCollection services)
         {
             services.AddDbContext<AppDbContext>(optionBuilder =>
             {
@@ -20,13 +22,22 @@ namespace Infrastructure
                     options => options.MigrationsAssembly(Assembly.GetExecutingAssembly().GetName().Name));
             });
 
-            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-
-            services.AddTransient<IStudentReadRepository, StudentRepository>();
-            services.AddTransient<IStudentWriteRepository, StudentRepository>();
+            Log.Logger = new LoggerConfiguration()
+                .WriteTo.Console()
+                .CreateLogger();
 
             services.AddTransient<ICommandDispatcher, CommandDispatcher>();
             services.AddTransient<IQueryDispatcher, QueryDispatcher>();
+
+            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+
+            return services;
+        }
+
+        public static IServiceCollection AddServices(this IServiceCollection services)
+        {
+            services.AddTransient<IStudentReadRepository, StudentRepository>();
+            services.AddTransient<IStudentWriteRepository, StudentRepository>();
 
             //services.AddTransient<ICommandHandler<CreateStudentCommand, bool>, CreateStudentCommandHandler>();
             //services.AddTransient<ICommandHandler<CreateTeacherCommand, string>, CreateTeacherCommandHandler>();
@@ -52,6 +63,7 @@ namespace Infrastructure
                  .WithTransientLifetime();
             });
 
+            return services;
         }
     }
 }
