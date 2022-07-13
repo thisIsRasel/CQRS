@@ -9,31 +9,63 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20220414112146_CreateSchoolDB")]
-    partial class CreateSchoolDB
+    [Migration("20220531124100_ModifyAddressTable")]
+    partial class ModifyAddressTable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.16")
+                .HasAnnotation("ProductVersion", "5.0.15")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("Domain.Aggregates.StudentAggregate.Address", b =>
+                {
+                    b.Property<string>("ItemId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("StudentItemId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("ItemId");
+
+                    b.HasIndex("StudentItemId");
+
+                    b.ToTable("Addresses");
+                });
 
             modelBuilder.Entity("Domain.Aggregates.StudentAggregate.Student", b =>
                 {
                     b.Property<string>("ItemId")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<int>("Age")
+                        .HasColumnType("int");
+
                     b.Property<string>("FirstName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ItemId");
 
                     b.ToTable("Students");
+                });
+
+            modelBuilder.Entity("Domain.Aggregates.StudentAggregate.Address", b =>
+                {
+                    b.HasOne("Domain.Aggregates.StudentAggregate.Student", null)
+                        .WithMany("Addresses")
+                        .HasForeignKey("StudentItemId");
+                });
+
+            modelBuilder.Entity("Domain.Aggregates.StudentAggregate.Student", b =>
+                {
+                    b.Navigation("Addresses");
                 });
 #pragma warning restore 612, 618
         }

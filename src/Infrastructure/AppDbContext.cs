@@ -11,5 +11,7 @@ namespace Infrastructure
         }
 
         public DbSet<Student> Students { get; set; } = default!;
+
+        public DbSet<Address> Addresses { get; set; } = default!;
     }
 }

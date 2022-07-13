@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Domain.Aggregates.StudentAggregate
 {
@@ -12,5 +13,7 @@ namespace Domain.Aggregates.StudentAggregate
         public string LastName { get; set; } = default!;
 
         public int Age { get; set; }
+
+        public ICollection<Address> Addresses { get; set; } = new List<Address>();
     }
 }
