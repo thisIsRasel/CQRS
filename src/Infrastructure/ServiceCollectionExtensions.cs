@@ -21,7 +21,7 @@ namespace Infrastructure
             services.AddDbContext<AppDbContext>(optionBuilder =>
             {
                 optionBuilder.UseSqlServer(
-                    "Server=THISISRASEL;Database=SchoolDB;Trusted_Connection=True;");
+                    "Server=THISISRASEL;Database=SchoolDB;Trusted_Connection=True;TrustServerCertificate=True;");
             });
 
             Log.Logger = new LoggerConfiguration()

@@ -58,6 +58,17 @@ namespace Application.CreateStudent
             student.FirstName = command.FirstName;
             student.LastName = command.LastName;
             student.Age = command.Age;
+
+            foreach(var address in command.Addresses)
+            {
+                student.Addresses.Add(new Address
+                {
+                    ItemId = Guid.NewGuid().ToString(),
+                    City = address.City,
+                    Zip = address.Zip,
+                    Country = address.Country,
+                });
+            }
         }
     }
 }

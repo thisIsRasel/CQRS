@@ -5,7 +5,7 @@ namespace Domain.Aggregates.StudentAggregate
 {
     public interface IStudentReadRepository
     {
-        Task<Student> GetAsync(string itemId);
+        Task<Student?> GetAsync(string itemId);
 
         Task<IEnumerable<Student>> GetByAgeAsync(
             int age, int pageNumber);

@@ -5,12 +5,12 @@ namespace Domain.Aggregates.StudentAggregate
     public class Address
     {
         [Key]
-        public string ItemId { get; set; }
+        public string ItemId { get; set; } = default!;
 
-        public string City { get; }
+        public string City { get; set; } = default!;
 
-        public string Zip { get; }
-         
-        public string Country { get; }
+        public string Zip { get; set; } = default!;
+
+        public string Country { get; set; } = default!;
     }
 }

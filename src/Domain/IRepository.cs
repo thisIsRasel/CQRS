@@ -6,7 +6,7 @@ namespace Domain
     public interface IRepository<TEntity>
         where TEntity : class
     {
-        Task<TEntity> GetItemAsync(string itemId);
+        Task<TEntity?> GetItemAsync(string itemId);
 
         Task<IEnumerable<TEntity>> GetItemsAsync(
             ISpecification<TEntity>? specification = null);

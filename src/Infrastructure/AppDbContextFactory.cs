@@ -9,7 +9,7 @@ namespace Infrastructure
         {
             var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
             optionsBuilder.UseSqlServer(
-                "Server=THISISRASEL;Database=SchoolDB;Trusted_Connection=True;");
+                "Server=THISISRASEL;Database=SchoolDB;Trusted_Connection=True;TrustServerCertificate=True;");
 
             return new AppDbContext(optionsBuilder.Options);
         }

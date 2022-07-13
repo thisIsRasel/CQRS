@@ -18,7 +18,7 @@ namespace Infrastructure
             _entities = _appDbContext.Set<TEntity>();
         }
 
-        public async Task<TEntity> GetItemAsync(string itemId)
+        public async Task<TEntity?> GetItemAsync(string itemId)
         {
             return await _entities.FindAsync(itemId);
         }

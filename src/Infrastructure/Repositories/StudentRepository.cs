@@ -16,7 +16,7 @@ namespace Infrastructure.Repositories
             _repository = repository;
         }
 
-        public async Task<Student> GetAsync(string itemId)
+        public async Task<Student?> GetAsync(string itemId)
         {
             return await _repository.GetItemAsync(itemId);
         }

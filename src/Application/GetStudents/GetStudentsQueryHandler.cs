@@ -28,7 +28,7 @@ namespace Application.GetStudents
             return new GetStudentsResponse
             {
                 Students = result.ToList(),
-                TotalCount = totalCount
+                TotalCount = totalCount,
             };
         }
     }
